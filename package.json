@@ -1,6 +1,6 @@
 {
   "name": "fedbox",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Zero to Fediverse in 60 seconds",
   "type": "module",
   "main": "lib/server.js",
