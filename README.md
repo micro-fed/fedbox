@@ -15,9 +15,31 @@ fedbox init
 
 # Start your server
 fedbox start
+
+# Post something!
+fedbox post "Hello, Fediverse!"
 ```
 
 That's it. You're on the Fediverse.
+
+## Commands
+
+```bash
+# Setup
+fedbox init           # Set up your identity
+fedbox start          # Start the server
+fedbox status         # Show your profile info
+
+# Social
+fedbox post "text"    # Post a message to followers
+fedbox follow @user@domain  # Follow someone
+fedbox timeline       # View posts from people you follow
+fedbox reply <url> "text"   # Reply to a post
+fedbox posts          # View your own posts
+
+# Help
+fedbox help           # Show all commands
+```
 
 ## Federation (so Mastodon can find you)
 
@@ -42,28 +64,25 @@ Restart your server, and you're federated! Search for `@yourname@abc123.ngrok.io
 ## What You Get
 
 - **Your own identity** — `@you@yourdomain.com`
+- **Post from CLI** — `fedbox post "Hello world"`
+- **Follow anyone** — `fedbox follow @user@mastodon.social`
+- **View timeline** — `fedbox timeline`
+- **Reply to posts** — `fedbox reply <url> "Nice!"`
 - **ActivityPub compatible** — Works with Mastodon, Pleroma, Pixelfed, etc.
-- **Persistent storage** — SQLite database for followers, posts, activities
-- **Beautiful profile page** — Dark theme, looks great
-- **Zero config** — Just answer a few questions
-
-## Commands
-
-```bash
-fedbox init     # Set up your identity
-fedbox start    # Start the server
-fedbox status   # Show current config
-fedbox help     # Show help
-```
+- **HTTP Signature verification** — Secure federation
+- **Rate limiting** — Protection against abuse
+- **Persistent storage** — SQLite database
+- **Beautiful profile page** — Dark theme, shows your posts
 
 ## How It Works
 
 Fedbox uses [microfed](https://github.com/micro-fed/microfed.org) for ActivityPub primitives:
 
 - **Profile** — Your actor/identity
-- **Inbox** — Receive follows, likes, boosts
+- **Inbox** — Receive follows, likes, boosts, posts
 - **Outbox** — Your posts
 - **WebFinger** — So others can find you
+- **HTTP Signatures** — Secure signed requests
 
 Data is stored in SQLite (`data/fedbox.db`).
 
