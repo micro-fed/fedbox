@@ -28,6 +28,7 @@ const BANNER = `
 const COMMANDS = {
   init: runInit,
   start: runStart,
+  profile: runProfile,
   status: runStatus,
   post: runPost,
   follow: runFollow,
@@ -120,6 +121,20 @@ async function runStart() {
 
   const { startServer } = await import('../lib/server.js')
   await startServer()
+}
+
+async function runProfile() {
+  if (!existsSync('fedbox.json')) {
+    console.log('❌ Not initialized. Run: fedbox init\n')
+    process.exit(1)
+  }
+
+  const config = JSON.parse(readFileSync('fedbox.json', 'utf8'))
+  const port = process.argv[3] || config.port || 3000
+  console.log(`🪪 Starting profile server on port ${port}...\n`)
+
+  const { startProfileServer } = await import('../lib/profile-server.js')
+  await startProfileServer(parseInt(port))
 }
 
 async function runStatus() {
@@ -372,7 +387,8 @@ Usage: fedbox <command> [args]
 
 Setup:
   init              Set up a new Fediverse identity
-  start             Start the server
+  start             Start the full ActivityPub server
+  profile [port]    Start profile-only server (minimal, edit via web)
   status            Show current configuration
 
 Social:
@@ -391,6 +407,10 @@ Quick start:
   $ fedbox start
   $ fedbox post "Hello, Fediverse!"
   $ fedbox follow @user@mastodon.social
+
+Profile only (for Solid/WebID testing):
+  $ fedbox profile
+  Then visit http://localhost:3000/ and click Edit
 
 For federation (so Mastodon can find you):
   $ ngrok http 3000
