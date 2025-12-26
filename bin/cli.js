@@ -6,7 +6,7 @@
  */
 
 import { createInterface } from 'readline'
-import { existsSync, writeFileSync, mkdirSync, readFileSync } from 'fs'
+import { existsSync, writeFileSync, mkdirSync, readFileSync, unlinkSync, rmSync } from 'fs'
 import { generateKeypair } from 'microfed/auth'
 
 const rl = createInterface({
@@ -34,6 +34,7 @@ const COMMANDS = {
   timeline: runTimeline,
   reply: runReply,
   posts: runPosts,
+  clean: runClean,
   help: runHelp
 }
 
@@ -328,6 +329,42 @@ Create a post with: fedbox post "Hello, Fediverse!"
   rl.close()
 }
 
+async function runClean() {
+  const all = process.argv[3] === '--all'
+
+  console.log('🧹 Cleaning up...\n')
+
+  // Remove database
+  if (existsSync('data/fedbox.db')) {
+    unlinkSync('data/fedbox.db')
+    console.log('   ✓ Removed data/fedbox.db')
+  }
+
+  // Remove data directory if empty
+  if (existsSync('data')) {
+    try {
+      rmSync('data', { recursive: false })
+      console.log('   ✓ Removed data/')
+    } catch {
+      // Directory not empty, that's ok
+    }
+  }
+
+  // Remove config if --all
+  if (all && existsSync('fedbox.json')) {
+    unlinkSync('fedbox.json')
+    console.log('   ✓ Removed fedbox.json')
+  }
+
+  console.log('\n✅ Clean complete!')
+
+  if (!all) {
+    console.log('\n   Tip: Use "fedbox clean --all" to also remove config')
+  }
+
+  rl.close()
+}
+
 function runHelp() {
   console.log(`
 ${BANNER}
@@ -346,6 +383,7 @@ Social:
   posts             View your own posts
 
 Other:
+  clean             Remove database (add --all to also remove config)
   help              Show this help
 
 Quick start:
