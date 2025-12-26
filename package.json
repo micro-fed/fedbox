@@ -12,8 +12,8 @@
     "test": "node --test 'test/*.test.js'"
   },
   "dependencies": {
-    "microfed": "^0.0.13",
-    "better-sqlite3": "^11.0.0"
+    "better-sqlite3": "^11.0.0",
+    "microfed": "^0.0.14"
   },
   "keywords": [
     "activitypub",
