@@ -112,6 +112,44 @@ https://me.example.com               https://fedbox.example.com
 
 The profile can be hosted anywhere (GitHub Pages, S3, any static server). The AP server handles federation.
 
+## Remote Profile via Data Island
+
+Fedbox can fetch your identity from a remote static HTML page containing a JSON-LD data island:
+
+**Static HTML profile** (hosted anywhere):
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="application/ld+json">
+  {
+    "@context": ["https://www.w3.org/ns/activitystreams", "https://w3id.org/security/v1"],
+    "type": "Person",
+    "id": "https://me.example.com/alice#me",
+    "preferredUsername": "alice",
+    "name": "Alice",
+    "publicKey": {
+      "id": "https://me.example.com/alice#main-key",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----..."
+    }
+  }
+  </script>
+</head>
+<body>...</body>
+</html>
+```
+
+**Fedbox config** (`fedbox.json`):
+```json
+{
+  "username": "alice",
+  "profileUrl": "https://me.example.com/alice",
+  "domain": "fedbox.example.com"
+}
+```
+
+Fedbox extracts the JSON-LD, merges it with local AP endpoints (inbox, outbox, etc.), and serves with proper content negotiation. This allows your identity to live on a static homepage while fedbox handles ActivityPub federation.
+
 ## Federation (so Mastodon can find you)
 
 To federate with the wider Fediverse, you need a public HTTPS URL:
@@ -159,6 +197,7 @@ After `fedbox init`, you'll have a `fedbox.json`:
   "port": 3000,
   "domain": null,
   "apServer": null,
+  "profileUrl": null,
   "nostrPubkey": null,
   "avatar": null,
   "publicKey": "...",
@@ -170,6 +209,7 @@ After `fedbox init`, you'll have a `fedbox.json`:
 |-------|-------------|
 | `domain` | Your public domain (for federation) |
 | `apServer` | External AP server URL (for separated mode) |
+| `profileUrl` | Remote HTML profile URL (extracts JSON-LD data island) |
 | `nostrPubkey` | 64-char hex Nostr pubkey |
 | `avatar` | Avatar filename in `public/` |
 
