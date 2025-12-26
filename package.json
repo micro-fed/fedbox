@@ -1,0 +1,31 @@
+{
+  "name": "pubcrawl",
+  "version": "0.0.1",
+  "description": "Zero to Fediverse in 60 seconds",
+  "type": "module",
+  "main": "lib/server.js",
+  "bin": {
+    "pubcrawl": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node lib/server.js",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "microfed": "^0.0.13",
+    "better-sqlite3": "^11.0.0"
+  },
+  "keywords": [
+    "activitypub",
+    "fediverse",
+    "mastodon",
+    "server",
+    "federation"
+  ],
+  "author": "Melvin Carvalho",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/micro-fed/pubcrawl"
+  }
+}
