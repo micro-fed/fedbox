@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node lib/server.js",
-    "test": "node --test test/"
+    "test": "node --test 'test/*.test.js'"
   },
   "dependencies": {
     "microfed": "^0.0.13",
