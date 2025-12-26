@@ -20,7 +20,7 @@ const ask = (q) => new Promise(resolve => rl.question(q, resolve))
 const BANNER = `
 ╔═══════════════════════════════════════════╗
 ║                                           ║
-║   🍺 PUBCRAWL                             ║
+║   📦 FEDBOX                               ║
 ║   Zero to Fediverse in 60 seconds         ║
 ║                                           ║
 ╚═══════════════════════════════════════════╝
@@ -50,8 +50,8 @@ async function runInit() {
   console.log(BANNER)
 
   // Check if already initialized
-  if (existsSync('pubcrawl.json')) {
-    console.log('⚠️  Already initialized. Delete pubcrawl.json to start over.\n')
+  if (existsSync('fedbox.json')) {
+    console.log('⚠️  Already initialized. Delete fedbox.json to start over.\n')
     process.exit(1)
   }
 
@@ -83,8 +83,8 @@ async function runInit() {
   }
 
   // Save config
-  writeFileSync('pubcrawl.json', JSON.stringify(config, null, 2))
-  console.log('✅ Config saved to pubcrawl.json')
+  writeFileSync('fedbox.json', JSON.stringify(config, null, 2))
+  console.log('✅ Config saved to fedbox.json')
 
   console.log(`
 ╔═══════════════════════════════════════════╗
@@ -94,25 +94,25 @@ async function runInit() {
 Next steps:
 
 1. Start your server:
-   $ pubcrawl start
+   $ fedbox start
 
 2. Expose with ngrok (for federation):
    $ ngrok http ${port}
 
-3. Update pubcrawl.json with your ngrok domain
+3. Update fedbox.json with your ngrok domain
 
 4. Visit your profile:
    http://localhost:${port}/@${config.username}
 
-Happy federating! 🍺
+Happy federating! 📦
 `)
 
   rl.close()
 }
 
 async function runStart() {
-  if (!existsSync('pubcrawl.json')) {
-    console.log('❌ Not initialized. Run: pubcrawl init\n')
+  if (!existsSync('fedbox.json')) {
+    console.log('❌ Not initialized. Run: fedbox init\n')
     process.exit(1)
   }
 
@@ -124,18 +124,18 @@ async function runStart() {
 }
 
 async function runStatus() {
-  if (!existsSync('pubcrawl.json')) {
-    console.log('❌ Not initialized. Run: pubcrawl init\n')
+  if (!existsSync('fedbox.json')) {
+    console.log('❌ Not initialized. Run: fedbox init\n')
     process.exit(1)
   }
 
   const config = JSON.parse(await import('fs').then(fs =>
-    fs.readFileSync('pubcrawl.json', 'utf8')
+    fs.readFileSync('fedbox.json', 'utf8')
   ))
 
   console.log(`
 ╔═══════════════════════════════════════════╗
-║  📊 PUBCRAWL STATUS                       ║
+║  📊 FEDBOX STATUS                         ║
 ╚═══════════════════════════════════════════╝
 
 Username:  @${config.username}
@@ -151,7 +151,7 @@ Created:   ${config.createdAt}
 function runHelp() {
   console.log(`
 ${BANNER}
-Usage: pubcrawl <command>
+Usage: fedbox <command>
 
 Commands:
   init      Set up a new Fediverse identity
@@ -160,12 +160,12 @@ Commands:
   help      Show this help
 
 Quick start:
-  $ pubcrawl init
-  $ pubcrawl start
+  $ fedbox init
+  $ fedbox start
 
 For federation (so Mastodon can find you):
   $ ngrok http 3000
-  Then update pubcrawl.json with your ngrok domain
+  Then update fedbox.json with your ngrok domain
 `)
 
   rl.close()

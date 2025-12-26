@@ -1,20 +1,20 @@
-# 🍺 Pubcrawl
+# 📦 Fedbox
 
 **Zero to Fediverse in 60 seconds.**
 
-Pubcrawl is the fastest way to get your own identity on the Fediverse. Run your own ActivityPub server, federate with Mastodon, and own your social presence.
+Fedbox is the fastest way to get your own identity on the Fediverse. Run your own ActivityPub server, federate with Mastodon, and own your social presence.
 
 ## Quick Start
 
 ```bash
 # Install
-npm install -g pubcrawl
+npm install -g fedbox
 
 # Set up your identity
-pubcrawl init
+fedbox init
 
 # Start your server
-pubcrawl start
+fedbox start
 ```
 
 That's it. You're on the Fediverse.
@@ -28,7 +28,7 @@ To federate with the wider Fediverse, you need a public HTTPS URL. The easiest w
 ngrok http 3000
 ```
 
-Copy your ngrok URL (e.g., `abc123.ngrok.io`) and add it to `pubcrawl.json`:
+Copy your ngrok URL (e.g., `abc123.ngrok.io`) and add it to `fedbox.json`:
 
 ```json
 {
@@ -50,26 +50,26 @@ Restart your server, and you're federated! Search for `@yourname@abc123.ngrok.io
 ## Commands
 
 ```bash
-pubcrawl init     # Set up your identity
-pubcrawl start    # Start the server
-pubcrawl status   # Show current config
-pubcrawl help     # Show help
+fedbox init     # Set up your identity
+fedbox start    # Start the server
+fedbox status   # Show current config
+fedbox help     # Show help
 ```
 
 ## How It Works
 
-Pubcrawl uses [microfed](https://github.com/micro-fed/microfed.org) for ActivityPub primitives:
+Fedbox uses [microfed](https://github.com/micro-fed/microfed.org) for ActivityPub primitives:
 
 - **Profile** — Your actor/identity
 - **Inbox** — Receive follows, likes, boosts
 - **Outbox** — Your posts
 - **WebFinger** — So others can find you
 
-Data is stored in SQLite (`data/pubcrawl.db`).
+Data is stored in SQLite (`data/fedbox.db`).
 
 ## Configuration
 
-After `pubcrawl init`, you'll have a `pubcrawl.json`:
+After `fedbox init`, you'll have a `fedbox.json`:
 
 ```json
 {
@@ -96,4 +96,4 @@ MIT
 
 ---
 
-**Built with [microfed](https://github.com/micro-fed/microfed.org). Happy federating! 🍺**
+**Built with [microfed](https://github.com/micro-fed/microfed.org). Happy federating! 📦**
