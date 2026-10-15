@@ -100,3 +100,29 @@ test('resolves a standalone key document via its owner', async () => {
   assert.equal(result.valid, true)
   assert.equal(result.actor.id, ACTOR)
 })
+
+test('rejects a key document that claims another origin\'s actor', async () => {
+  // evil.example hosts a document claiming to be alice, publishing its own key
+  const evilKey = 'https://evil.example/users/mallory#main-key'
+  const forged = {
+    id: ACTOR,
+    type: 'Person',
+    publicKey: { id: evilKey, owner: ACTOR, publicKeyPem: other.publicKey }
+  }
+  const docs = { [ACTOR]: actorDoc, 'https://evil.example/users/mallory': forged }
+  const req = signedRequest({ keyId: evilKey, key: other.privateKey })
+  const result = await verifyRequest({ ...req, fetchActor: fetchFrom(docs) })
+  assert.equal(result.valid, false)
+  assert.match(result.reason, /resolve key/)
+})
+
+test('rejects a standalone key whose owner resolves to another origin', async () => {
+  const keyUrl = 'https://evil.example/keys/1'
+  const docs = {
+    [keyUrl]: { id: keyUrl, owner: 'https://evil.example/users/x', publicKeyPem: other.publicKey },
+    'https://evil.example/users/x': { ...actorDoc, publicKey: { id: keyUrl, owner: ACTOR, publicKeyPem: other.publicKey } }
+  }
+  const req = signedRequest({ keyId: keyUrl, key: other.privateKey })
+  const result = await verifyRequest({ ...req, fetchActor: fetchFrom(docs) })
+  assert.equal(result.valid, false)
+})
