@@ -150,6 +150,8 @@ Fedbox can fetch your identity from a remote static HTML page containing a JSON-
 
 Fedbox extracts the JSON-LD, merges it with local AP endpoints (inbox, outbox, etc.), and serves with proper content negotiation. This allows your identity to live on a static homepage while fedbox handles ActivityPub federation.
 
+Fedbox signs outgoing activities with the private key in `fedbox.json`, using the `publicKey.id` your profile publishes. So the profile's `publicKey.publicKeyPem` must be the `publicKey` from `fedbox.json`, and its `id` must be on the profile's own origin. If it is missing or different, Fedbox logs why and falls back to a local actor. Remote servers fetch that key id to verify signatures, so the homepage must also answer `Accept: application/activity+json` with the actor JSON.
+
 ## Federation (so Mastodon can find you)
 
 To federate with the wider Fediverse, you need a public HTTPS URL:
